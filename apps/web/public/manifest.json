@@ -1,7 +1,7 @@
 {
   "name": "Jobberscrape",
   "short_name": "Jobberscrape",
-  "description": "High-Trust Entry-Level & NYSC Job Feed in Nigeria",
+  "description": "High-Trust Entry-Level Job Feed in Nigeria",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F8FAFC",
