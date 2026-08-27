@@ -1,0 +1,143 @@
+.header {
+  background-color: var(--color-card-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.navRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logoBadge {
+  background: var(--color-ink-navy);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+}
+
+.logoIcon {
+  color: #34D399;
+}
+
+.logoText {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-ink-navy);
+  letter-spacing: -0.02em;
+}
+
+.logoAccent {
+  color: var(--color-blue-primary);
+}
+
+.tagline {
+  font-size: 0.75rem;
+  color: var(--color-ink-muted);
+  display: block;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.telegramButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-blue-primary);
+  color: #FFFFFF;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background-color 0.15s ease;
+}
+
+.telegramButton:hover {
+  background-color: var(--color-blue-hover);
+}
+
+.hireLink {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-navy);
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.hireLink:hover {
+  background-color: var(--color-surface-bg);
+}
+
+.trustBanner {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--color-emerald-light);
+  border: 1px solid var(--color-emerald-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #065F46;
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.trustIcon {
+  color: var(--color-emerald-verified);
+}
+
+.metricsItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.pulseDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-emerald-verified);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+}
+
+@media (max-width: 768px) {
+  .navRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .trustBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+}
