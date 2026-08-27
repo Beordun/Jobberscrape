@@ -1,0 +1,95 @@
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgvector(map: "vector")]
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+enum RoleType {
+  TECH
+  OPS
+  FINANCE
+  NYSC_TRAINEE
+  OTHER
+}
+
+enum VerificationStatus {
+  VERIFIED
+  CAUTION
+  REJECTED
+  SUSPENDED
+  PENDING_REVIEW
+}
+
+model Job {
+  id                  String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title               String             @db.VarChar(255)
+  companyName         String             @db.VarChar(255)
+  location            String             @db.VarChar(100)
+  roleType            RoleType           @default(OTHER)
+  description         String             @db.Text
+  applyUrl            String             @db.Text
+  contactEmail        String?            @db.VarChar(255)
+  minExperienceYears  Int                @default(0)
+  maxExperienceYears  Int                @default(0)
+  verificationStatus  VerificationStatus @default(VERIFIED)
+  scamRiskScore       Int                @default(0)
+  reportCount         Int                @default(0)
+  isFeatured          Boolean            @default(false)
+  
+  sourceId            String?            @db.Uuid
+  scrapedSource       ScrapedSource?     @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+
+  // Vector Embedding for Semantic Search / Scam Scoring
+  embedding           Unsupported("vector(1536)")?
+
+  createdAt           DateTime           @default(now()) @db.Timestamptz(6)
+  updatedAt           DateTime           @updatedAt @db.Timestamptz(6)
+
+  reports             JobReport[]
+
+  @@index([verificationStatus, isFeatured, createdAt(sort: Desc)])
+  @@index([location, roleType])
+  @@index([scamRiskScore])
+  @@map("jobs")
+}
+
+model ScrapedSource {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceUrl String   @unique @db.Text
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  
+  jobs      Job[]
+
+  @@map("scraped_sources")
+}
+
+model JobReport {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  jobId     String   @db.Uuid
+  reason    String   @db.Text
+  userIp    String   @db.VarChar(45)
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, userIp])
+  @@map("job_reports")
+}
+
+model EmployerLead {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  companyName String   @db.VarChar(255)
+  email       String   @db.VarChar(255)
+  phone       String?  @db.VarChar(50)
+  notes       String?  @db.Text
+  status      String   @default("PENDING") @db.VarChar(50)
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("employer_leads")
+}

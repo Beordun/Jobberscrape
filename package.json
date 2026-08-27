@@ -1,0 +1,25 @@
+{
+  "name": "jobberscrape-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "High-Trust Entry-Level & NYSC Job Platform for Nigeria",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspace=apps/web",
+    "start": "npm run start --workspace=apps/web",
+    "db:generate": "prisma generate --schema=packages/database/prisma/schema.prisma",
+    "db:push": "prisma db push --schema=packages/database/prisma/schema.prisma",
+    "scraper:run": "python services/scraper/main.py",
+    "bot:broadcast": "python services/bot/broadcast.py"
+  },
+  "devDependencies": {
+    "prisma": "^5.18.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.18.0"
+  }
+}
