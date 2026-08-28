@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/apps/web/src/app/page.module.css"],"sourcesContent":[".page {\n  min-height: 100vh;\n  padding-bottom: 4rem;\n}\n\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));\n  gap: 1.25rem;\n}\n\n.emptyState {\n  background: var(--color-card-bg);\n  border: 1px dashed var(--color-border);\n  border-radius: var(--radius-lg);\n  padding: 3.5rem 1.5rem;\n  text-align: center;\n  margin-top: 1.5rem;\n}\n\n.emptyState h3 {\n  font-size: 1.2rem;\n  font-weight: 700;\n  color: var(--color-ink-navy);\n  margin-bottom: 0.5rem;\n}\n\n.emptyState p {\n  color: var(--color-ink-muted);\n  font-size: 0.92rem;\n  margin-bottom: 1.25rem;\n}\n\n.resetBtn {\n  display: inline-block;\n  background: var(--color-ink-navy);\n  color: #FFFFFF;\n  padding: 0.6rem 1.25rem;\n  border-radius: var(--radius-sm);\n  font-size: 0.85rem;\n  font-weight: 600;\n  transition: background 0.15s ease;\n}\n\n.resetBtn:hover {\n  background: var(--color-blue-primary);\n}\n\n@media (max-width: 640px) {\n  .grid {\n    grid-template-columns: 1fr;\n  }\n}\n"],"names":[],"mappings":"AAAA;;;;;AAKA;;;;;;AAMA;;;;;;;;;AASA;;;;;;;AAOA;;;;;;AAMA;;;;;;;;;;;AAWA;;;;AAIA;EACE"}}]
-}
