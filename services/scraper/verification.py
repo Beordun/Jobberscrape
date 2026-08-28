@@ -33,12 +33,23 @@ class VerificationEngine:
     def extract_experience_years(text: str) -> int:
         """
         Extracts the required years of experience from text using regex.
-        Returns highest detected number of years or 0.
+        Captures both bounds of a range ("3-5 years") and standalone figures
+        ("5+ years", "2 years"), returning the highest detected value or 0.
         """
-        matches = re.findall(r'(\d+)\+?\s*(?:-\s*\d+\s*)?years?', text, re.IGNORECASE)
-        if matches:
-            return max(int(m) for m in matches)
-        return 0
+        values: List[int] = []
+
+        # Range form: "3-5 years", "2 - 4 years", "3 to 5 years"
+        range_matches = re.findall(
+            r'(\d+)\s*(?:-|to)\s*(\d+)\s*\+?\s*years?', text, re.IGNORECASE
+        )
+        for low, high in range_matches:
+            values.extend([int(low), int(high)])
+
+        # Standalone form: "5+ years", "2 years"
+        single_matches = re.findall(r'(\d+)\s*\+?\s*years?', text, re.IGNORECASE)
+        values.extend(int(m) for m in single_matches)
+
+        return max(values) if values else 0
 
     @classmethod
     def verify_listing(cls, job_data: Dict[str, Any], similarity_score: float = 0.0) -> Tuple[str, int, List[str]]:
@@ -71,9 +82,15 @@ class VerificationEngine:
             
         # 4. Impersonation Check (Tier-1 brand using free webmail)
         company_lower = job_data.get('companyName', '').lower()
+        title_lower = job_data.get('title', '').lower()
         contact_email = (job_data.get('contactEmail') or '').lower()
-        
-        is_tier_1 = any(corp in company_lower or corp in full_text for corp in TIER_1_CORPORATES)
+
+        # Scope the brand match to the company name and title only. Matching
+        # against the full description caused false positives (e.g., a legit
+        # SMB post saying "experience with Paystack APIs").
+        is_tier_1 = any(
+            corp in company_lower or corp in title_lower for corp in TIER_1_CORPORATES
+        )
         if is_tier_1 and contact_email:
             domain = contact_email.split('@')[-1] if '@' in contact_email else ''
             if domain in FREE_WEBMAIL_DOMAINS:

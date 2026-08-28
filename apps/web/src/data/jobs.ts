@@ -90,5 +90,22 @@ export const INITIAL_JOBS: Job[] = [
     isFeatured: false,
     createdAt: new Date(Date.now() - 3600000 * 30).toISOString(),
     verifiedBadgeDetails: "Accredited NYSC PPA Employer"
+  },
+  {
+    id: "f80b1c9d-8351-41d9-8139-444a9540b106",
+    title: "Customer Care Officer",
+    companyName: "Swift Credit Microfinance",
+    location: "Lagos",
+    roleType: "OPS",
+    description: "Hiring customer care officers for our Lagos branch. Moderate similarity to a known MLM pattern detected; under manual admin review before full verification.",
+    applyUrl: "https://swiftcredit.example/careers",
+    contactEmail: "hiring@swiftcredit.example",
+    minExperienceYears: 0,
+    maxExperienceYears: 1,
+    verificationStatus: "CAUTION",
+    scamRiskScore: 65,
+    reportCount: 0,
+    isFeatured: false,
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString()
   }
 ];

@@ -10,6 +10,8 @@ interface FilterBarProps {
   onRoleChange: (r: string) => void;
   selectedLocation: string;
   onLocationChange: (l: string) => void;
+  selectedVerification: string;
+  onVerificationChange: (v: string) => void;
   showBookmarkedOnly: boolean;
   onToggleBookmarkedOnly: () => void;
   totalResults: number;
@@ -22,6 +24,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   onRoleChange,
   selectedLocation,
   onLocationChange,
+  selectedVerification,
+  onVerificationChange,
   showBookmarkedOnly,
   onToggleBookmarkedOnly,
   totalResults
@@ -72,6 +76,19 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               className={`${styles.filterPill} ${selectedLocation === loc ? styles.pillActive : ''}`}
             >
               {loc === 'ALL' ? 'All Locations' : loc}
+            </button>
+          ))}
+        </div>
+
+        <div className={styles.pillGroup}>
+          <span className={styles.filterLabel}>Trust:</span>
+          {['ALL', 'VERIFIED', 'CAUTION'].map((v) => (
+            <button
+              key={v}
+              onClick={() => onVerificationChange(v)}
+              className={`${styles.filterPill} ${selectedVerification === v ? styles.pillActive : ''}`}
+            >
+              {v === 'ALL' ? 'All Trust' : v === 'VERIFIED' ? 'Verified' : 'Caution'}
             </button>
           ))}
         </div>

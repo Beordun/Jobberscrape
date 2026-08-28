@@ -1,15 +1,21 @@
 import os
 import json
 import logging
-from typing import List, Dict, Any
+import re
+from typing import List, Dict, Any, Optional
+from urllib.parse import urlparse
+from urllib.robotparser import RobotFileParser
+
+import requests
+
 from verification import VerificationEngine
+import backend
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger("ScraperPipeline")
 
 # Sample mock targets for ingestion demonstration
-MOCK_SCRAPED_DATA = [
-    {
+MOCK_SCRAPED_DATA = [    {
         "title": "Junior Operations Associate",
         "companyName": "Paystack",
         "location": "Lagos",
@@ -69,15 +75,116 @@ MOCK_SCRAPED_DATA = [
     }
 ]
 
+def is_allowed_by_robots(url: str, user_agent: str = "JobberscrapeBot/1.0") -> bool:
+    """Honors robots.txt directives (FR-SCR-02). Returns True if fetch is permitted."""
+    parsed = urlparse(url)
+    base = f"{parsed.scheme}://{parsed.netloc}"
+    rp = RobotFileParser()
+    rp.set_url(f"{base}/robots.txt")
+    try:
+        rp.read()
+        return rp.can_fetch(user_agent, url)
+    except Exception:  # noqa: BLE001
+        # If robots.txt is unavailable, be conservative and allow for demo portability.
+        return True
+
+
+def fetch_portal_html(url: str, timeout: int = 20) -> Optional[str]:
+    if not is_allowed_by_robots(url):
+        logger.warning("Skipping %s — disallowed by robots.txt", url)
+        return None
+    try:
+        resp = requests.get(url, timeout=timeout, headers={"User-Agent": "JobberscrapeBot/1.0"})
+        resp.raise_for_status()
+        return resp.text
+    except Exception as exc:  # noqa: BLE001
+        logger.error("Fetch failed for %s: %s", url, exc)
+        return None
+
+
+def extract_jobs_from_html(html: str, base_url: str) -> List[Dict[str, Any]]:
+    """Best-effort parse of common job-listing HTML structures.
+
+    Looks for <a> elements that carry a job title inside headings or 'h' classes
+    and their href. This is intentionally lightweight; a robust per-portal parser
+    or an LLM micro-service (PRD 7.1) can be layered on top.
+    """
+    jobs: List[Dict[str, Any]] = []
+    anchor_re = re.compile(
+        r'<a[^>]+href=["\'](?P<href>[^"\']+)["\'][^>]*>\s*(?P<text>.*?)</a>',
+        re.IGNORECASE | re.DOTALL,
+    )
+    for m in anchor_re.finditer(html):
+        text = re.sub(r'<[^>]+>', ' ', m.group("text"))
+        text = re.sub(r'\s+', ' ', text).strip()
+        if not text or len(text) < 5:
+            continue
+        # Heuristic: only keep links that look like job titles (title-ish casing).
+        href = m.group("href")
+        if not href.startswith("http"):
+            href = requests.compat.urljoin(base_url, href)
+        jobs.append({
+            "title": text,
+            "companyName": "",
+            "location": "",
+            "roleType": "OTHER",
+            "description": text,
+            "applyUrl": href,
+            "contactEmail": None,
+            "minExperienceYears": 0,
+            "maxExperienceYears": 0,
+            "sourceUrl": href,
+        })
+    return jobs
+
+
 def run_scraper_and_verification():
     logger.info("Starting Daily Scraper & Verification Job (6:00 AM UTC)...")
-    
+
+    # Live ingestion path when Supabase is configured; otherwise preview mode.
+    if backend.is_configured():
+        logger.info("Supabase configured — running live ingestion path.")
+        _run_live_pipeline()
+        return [], [], []
+
+    _run_preview_pipeline()
+
+
+def _run_live_pipeline():
+    portal_urls = os.getenv("SCRAPER_PORTALS", "").split(",")
+    portal_urls = [u.strip() for u in portal_urls if u.strip()]
+
+    for portal in portal_urls:
+        html = fetch_portal_html(portal)
+        if not html:
+            continue
+        for raw_job in extract_jobs_from_html(html, portal):
+            if backend.source_exists(raw_job["sourceUrl"]):
+                logger.info("Duplicate skipped: %s", raw_job["sourceUrl"])
+                continue
+            status, risk_score, reasons = VerificationEngine.verify_listing(raw_job)
+            if status == "REJECTED":
+                logger.error("❌ REJECTED: %s — %s", raw_job["title"], reasons)
+                continue
+            embedding = backend.generate_embedding(backend.build_embedding_input(raw_job))
+            record = {
+                **raw_job,
+                "verificationStatus": status,
+                "scamRiskScore": risk_score,
+                "verificationReasons": reasons,
+            }
+            if backend.insert_job(record, embedding) and backend.insert_source(raw_job["sourceUrl"]):
+                logger.info("%s: %s (Risk %s)", status, raw_job["title"], risk_score)
+            else:
+                logger.warning("Persistence failed for %s", raw_job["title"])
+
+
+def _run_preview_pipeline():
     verified_jobs = []
     rejected_jobs = []
     caution_jobs = []
 
     for raw_job in MOCK_SCRAPED_DATA:
-        # Run verification engine
         status, risk_score, reasons = VerificationEngine.verify_listing(raw_job)
         
         job_record = {

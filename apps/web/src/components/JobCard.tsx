@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Job, RoleType } from '../types/job';
+import { Job, RoleType, VerificationStatus } from '../types/job';
 import { 
   Building2, 
   MapPin, 
@@ -34,8 +34,31 @@ export const JobCard: React.FC<JobCardProps> = ({
     }
   };
 
+  const isCaution = job.verificationStatus === 'CAUTION';
+  const isVerified = job.verificationStatus === 'VERIFIED';
+
+  const renderVerificationBadge = () => {
+    if (isVerified) {
+      return (
+        <span className={styles.verifiedPill}>
+          <ShieldCheck size={14} className={styles.verifiedIcon} />
+          Verified Clean
+        </span>
+      );
+    }
+    if (isCaution) {
+      return (
+        <span className={styles.cautionPill}>
+          <AlertTriangle size={14} className={styles.cautionIcon} />
+          Caution — Under Review
+        </span>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className={`${styles.card} ${job.isFeatured ? styles.featuredCard : ''}`}>
+    <div className={`${styles.card} ${job.isFeatured ? styles.featuredCard : ''} ${isCaution ? styles.cautionCard : ''}`}>
       {job.isFeatured && (
         <div className={styles.featuredRibbon}>
           ★ FEATURED DROP
@@ -46,10 +69,7 @@ export const JobCard: React.FC<JobCardProps> = ({
         <div>
           <div className={styles.companyRow}>
             <span className={styles.companyName}>{job.companyName}</span>
-            <span className={styles.verifiedPill}>
-              <ShieldCheck size={14} className={styles.verifiedIcon} />
-              Verified Clean
-            </span>
+            {renderVerificationBadge()}
           </div>
           <h2 className={styles.jobTitle}>{job.title}</h2>
         </div>

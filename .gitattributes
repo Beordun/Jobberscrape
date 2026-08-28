@@ -1,0 +1,24 @@
+# Normalize line endings across platforms (prevents CRLF/LF churn)
+* text=auto
+
+# Explicitly mark text files
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.css text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.py text
+*.prisma text
+*.sql text
+*.html text
+
+# Binary files (do not normalize)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

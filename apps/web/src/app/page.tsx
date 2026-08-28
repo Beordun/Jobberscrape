@@ -14,6 +14,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState('ALL');
   const [selectedLocation, setSelectedLocation] = useState('ALL');
+  const [selectedVerification, setSelectedVerification] = useState('ALL');
   const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
   const [reportingJob, setReportingJob] = useState<Job | null>(null);
@@ -43,14 +44,24 @@ export default function HomePage() {
     });
   };
 
-  const handleReportScam = (jobId: string, reason: string) => {
-    console.log(`Report logged for Job ${jobId}: ${reason}`);
-    // Update local report count
+  const handleReportScam = async (jobId: string, reason: string) => {
+    // Local optimistic increment (works offline / preview).
     setJobs((prev) =>
       prev.map((job) =>
         job.id === jobId ? { ...job, reportCount: job.reportCount + 1 } : job
       )
     );
+
+    // FR-VER-05: persist report; backend escalates to PENDING_REVIEW at 3 distinct IPs.
+    try {
+      await fetch('/api/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId, reason }),
+      });
+    } catch (e) {
+      console.error('Failed to submit report', e);
+    }
   };
 
   // Instant Client-Side Filter
@@ -78,14 +89,19 @@ export default function HomePage() {
         return false;
       }
 
-      // 5. Bookmarks filter
+      // 5. Verification tag filter
+      if (selectedVerification !== 'ALL' && job.verificationStatus !== selectedVerification) {
+        return false;
+      }
+
+      // 6. Bookmarks filter
       if (showBookmarkedOnly && !bookmarkedIds.includes(job.id)) {
         return false;
       }
 
       return true;
     });
-  }, [jobs, searchQuery, selectedRole, selectedLocation, showBookmarkedOnly, bookmarkedIds]);
+  }, [jobs, searchQuery, selectedRole, selectedLocation, selectedVerification, showBookmarkedOnly, bookmarkedIds]);
 
   return (
     <div className={styles.page}>
@@ -99,6 +115,8 @@ export default function HomePage() {
           onRoleChange={setSelectedRole}
           selectedLocation={selectedLocation}
           onLocationChange={setSelectedLocation}
+          selectedVerification={selectedVerification}
+          onVerificationChange={setSelectedVerification}
           showBookmarkedOnly={showBookmarkedOnly}
           onToggleBookmarkedOnly={() => setShowBookmarkedOnly(!showBookmarkedOnly)}
           totalResults={filteredJobs.length}
@@ -113,6 +131,7 @@ export default function HomePage() {
                 setSearchQuery('');
                 setSelectedRole('ALL');
                 setSelectedLocation('ALL');
+                setSelectedVerification('ALL');
                 setShowBookmarkedOnly(false);
               }}
               className={styles.resetBtn}

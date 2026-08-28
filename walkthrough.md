@@ -6,9 +6,9 @@ We have scaffolded the complete monorepo for **Jobberscrape** along with the spe
 
 ### 1. Agents & Workspace Rules
 * **[AGENTS.md](file:///c:/Users/DT001/Desktop/Jobberscrape/AGENTS.md)**: Workspace engineering guidelines, design token definitions, and anti-scam verification SLA rules.
-* **[anti-scam-verifier](file:///c:/Users/DT001/Desktop/Jobberscrape/.agents/skills/anti-scam-verifier/SKILL.md)**: Agent skill defining deterministic fee/MLM rule drops, Tier-1 corporate impersonation checks, and vector similarity thresholds.
-* **[telegram-broadcaster](file:///c:/Users/DT001/Desktop/Jobberscrape/.agents/skills/telegram-broadcaster/SKILL.md)**: Agent skill defining the 8:00 AM WAT curated payload format and inline keyboard specs.
 * **[frontend-design](file:///c:/Users/DT001/Desktop/Jobberscrape/.agents/skills/frontend-design/SKILL.md)**: Existing specialized design skill guiding the distinctive UI.
+
+> The `anti-scam-verifier` and `telegram-broadcaster` skills are not yet implemented; their logic lives directly in the Python services (`services/scraper/verification.py` and `services/bot/broadcast.py`).
 
 ---
 
