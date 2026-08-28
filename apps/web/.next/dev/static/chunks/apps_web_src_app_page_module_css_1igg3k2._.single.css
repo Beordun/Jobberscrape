@@ -1,0 +1,56 @@
+/* [project]/apps/web/src/app/page.module.css [app-client] (css) */
+.page-module__YnyroG__page {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+.page-module__YnyroG__grid {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.25rem;
+  display: grid;
+}
+
+.page-module__YnyroG__emptyState {
+  background: var(--color-card-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  text-align: center;
+  margin-top: 1.5rem;
+  padding: 3.5rem 1.5rem;
+}
+
+.page-module__YnyroG__emptyState h3 {
+  color: var(--color-ink-navy);
+  margin-bottom: .5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.page-module__YnyroG__emptyState p {
+  color: var(--color-ink-muted);
+  margin-bottom: 1.25rem;
+  font-size: .92rem;
+}
+
+.page-module__YnyroG__resetBtn {
+  background: var(--color-ink-navy);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: .6rem 1.25rem;
+  font-size: .85rem;
+  font-weight: 600;
+  transition: background .15s;
+  display: inline-block;
+}
+
+.page-module__YnyroG__resetBtn:hover {
+  background: var(--color-blue-primary);
+}
+
+@media (max-width: 640px) {
+  .page-module__YnyroG__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*# sourceMappingURL=apps_web_src_app_page_module_css_1igg3k2._.single.css.map*/

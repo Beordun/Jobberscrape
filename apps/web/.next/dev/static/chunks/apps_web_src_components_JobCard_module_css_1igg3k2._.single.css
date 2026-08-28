@@ -1,0 +1,199 @@
+/* [project]/apps/web/src/components/JobCard.module.css [app-client] (css) */
+.JobCard-module__IGhrxW__card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+  display: flex;
+  position: relative;
+}
+
+.JobCard-module__IGhrxW__card:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.JobCard-module__IGhrxW__featuredCard {
+  border-left: 4px solid var(--color-blue-primary);
+  background: linear-gradient(#fafcff 0%, #fff 100%);
+}
+
+.JobCard-module__IGhrxW__featuredRibbon {
+  letter-spacing: .05em;
+  color: var(--color-blue-primary);
+  background: var(--color-blue-light);
+  border-radius: var(--radius-sm);
+  align-self: flex-start;
+  padding: .2rem .6rem;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.JobCard-module__IGhrxW__cardHeader {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  display: flex;
+}
+
+.JobCard-module__IGhrxW__companyRow {
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .35rem;
+  display: flex;
+}
+
+.JobCard-module__IGhrxW__companyName {
+  color: var(--color-ink-muted);
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.JobCard-module__IGhrxW__verifiedPill {
+  color: var(--color-emerald-verified);
+  background: var(--color-emerald-light);
+  border-radius: var(--radius-sm);
+  align-items: center;
+  gap: .25rem;
+  padding: .15rem .45rem;
+  font-size: .72rem;
+  font-weight: 700;
+  display: inline-flex;
+}
+
+.JobCard-module__IGhrxW__verifiedIcon {
+  color: var(--color-emerald-verified);
+}
+
+.JobCard-module__IGhrxW__jobTitle {
+  color: var(--color-ink-navy);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.JobCard-module__IGhrxW__bookmarkBtn {
+  color: var(--color-ink-muted);
+  border-radius: var(--radius-sm);
+  padding: .4rem;
+  transition: all .15s;
+}
+
+.JobCard-module__IGhrxW__bookmarkBtn:hover {
+  color: var(--color-ink-navy);
+  background-color: var(--color-surface-bg);
+}
+
+.JobCard-module__IGhrxW__bookmarked {
+  color: var(--color-blue-primary);
+}
+
+.JobCard-module__IGhrxW__description {
+  color: var(--color-ink-muted);
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: .9rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.JobCard-module__IGhrxW__metaRow {
+  flex-direction: column;
+  gap: .5rem;
+  display: flex;
+}
+
+.JobCard-module__IGhrxW__metaPills {
+  flex-wrap: wrap;
+  gap: .5rem;
+  display: flex;
+}
+
+.JobCard-module__IGhrxW__metaPill {
+  background: var(--color-surface-bg);
+  color: var(--color-ink-navy);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  align-items: center;
+  gap: .35rem;
+  padding: .25rem .6rem;
+  font-size: .78rem;
+  font-weight: 600;
+  display: inline-flex;
+}
+
+.JobCard-module__IGhrxW__badgeTech {
+  color: #1e40af;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.JobCard-module__IGhrxW__badgeOps {
+  color: #9d174d;
+  background: #fdf2f8;
+  border-color: #fbcfe8;
+}
+
+.JobCard-module__IGhrxW__badgeFinance {
+  color: #065f46;
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.JobCard-module__IGhrxW__badgeNysc {
+  color: #92400e;
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.JobCard-module__IGhrxW__auditDetails {
+  color: var(--color-ink-muted);
+  font-size: .75rem;
+}
+
+.JobCard-module__IGhrxW__cardFooter {
+  border-top: 1px solid var(--color-border-subtle);
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: .75rem;
+  display: flex;
+}
+
+.JobCard-module__IGhrxW__reportLink {
+  color: var(--color-ink-muted);
+  align-items: center;
+  gap: .3rem;
+  font-size: .75rem;
+  transition: color .15s;
+  display: inline-flex;
+}
+
+.JobCard-module__IGhrxW__reportLink:hover {
+  color: #dc2626;
+}
+
+.JobCard-module__IGhrxW__applyButton {
+  background-color: var(--color-ink-navy);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem 1rem;
+  font-size: .85rem;
+  font-weight: 600;
+  transition: background-color .15s;
+  display: inline-flex;
+}
+
+.JobCard-module__IGhrxW__applyButton:hover {
+  background-color: var(--color-blue-primary);
+}
+
+/*# sourceMappingURL=apps_web_src_components_JobCard_module_css_1igg3k2._.single.css.map*/

@@ -1,10 +1,13 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Jobberscrape — High-Trust Entry-Level & NYSC Job Feed (Nigeria)',
   description: 'Automated scam-free job aggregation platform for Nigerian fresh graduates and NYSC corps members. 100% verified, 0 recruitment fees.',
   manifest: '/manifest.json',
+};
+
+export const viewport: Viewport = {
   themeColor: '#0A1128',
 };
 
