@@ -1,6 +1,6 @@
 # Jobberscrape
 
-Jobberscrape is an automated, scam-free job aggregator built specifically for Nigerian fresh graduates and NYSC corps members. 
+Jobberscrape is an automated, scam-free job aggregator built specifically for Nigerian fresh graduates and NYSC corps members.
 
 Finding an entry-level job in Nigeria often means dealing with fake interview invitations, multi-level marketing schemes disguised as corporate roles, and recruiters demanding application or processing fees. Jobberscrape fixes this by running an automated anti-scam verification engine on every scraped job before it reaches jobseekers through our web app or Telegram channel.
 
@@ -136,8 +136,8 @@ If these keys are left empty, the scraper and bot run safely in preview mode usi
 
 ## Verification Rules and Trust Guarantee
 
-- **Zero-Tolerance Fee Drop:** Listings containing terms like *"processing fee"*, *"registration fee"*, *"scratch card"*, or *"training fee"* are dropped immediately.
-- **MLM Filter:** Listings mentioning *"job briefing"*, *"wealth creation"*, or *"come with 2 passport photos"* are dropped immediately.
+- **Zero-Tolerance Fee Drop:** Listings containing terms like _"processing fee"_, _"registration fee"_, _"scratch card"_, or _"training fee"_ are dropped immediately.
+- **MLM Filter:** Listings mentioning _"job briefing"_, _"wealth creation"_, or _"come with 2 passport photos"_ are dropped immediately.
 - **Experience Filter:** Postings requiring more than 3 years of experience are stripped of their entry-level tag or rejected.
 - **Impersonation Penalties:** Free webmail contacts used on behalf of Tier-1 Nigerian corporate brands trigger a 35-point risk penalty.
 
